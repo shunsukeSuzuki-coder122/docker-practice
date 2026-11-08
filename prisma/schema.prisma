@@ -1,0 +1,24 @@
+// Prisma のスキーマ（データベースの設計図）
+// 詳しい文法: https://pris.ly/d/prisma-schema
+
+// generator: このスキーマから「Prisma Client」(DBを操作するためのTypeScriptコード)を生成する設定
+generator client {
+  // Prisma 7 の新しい生成方式。Rust製バイナリを使わないので Alpine でも動かしやすい
+  provider = "prisma-client"
+  // 生成されたコードの出力先（このファイルからの相対パス）
+  output   = "../app/generated/prisma"
+}
+
+// datasource: 接続先のデータベースの種類。実際の接続URLは
+// prisma.config.ts（CLI用）と app/lib/prisma.ts（実行時用）で DATABASE_URL から渡す
+datasource db {
+  provider = "postgresql"
+}
+
+// Todo テーブルの定義
+model Todo {
+  id        Int      @id @default(autoincrement()) // 主キー。自動で連番が振られる
+  title     String // ToDo の内容
+  done      Boolean  @default(false) // 完了したか。初期値は false（未完了）
+  createdAt DateTime @default(now()) // 作成日時。登録時の時刻が自動で入る
+}

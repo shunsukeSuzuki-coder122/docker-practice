@@ -32,6 +32,11 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+# ただし見本ファイルだけはコミットする
+!.env.example
+
+# Prisma が自動生成するクライアント（prisma generate で作り直せるのでコミットしない）
+/app/generated
 
 # vercel
 .vercel
