@@ -9,6 +9,10 @@ FROM node:24-alpine AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
+# Prisma Client を生成（schema.prisma から。DB接続は不要）。
+# 生成物は app/generated/prisma に出力され、次の build で standalone にバンドルされる。
+RUN npx prisma generate
+# ビルド。Cache Components + connection() により、ここでDBへは接続しない。
 RUN npm run build
 
 # 3. 完成品だけを箱に詰める
