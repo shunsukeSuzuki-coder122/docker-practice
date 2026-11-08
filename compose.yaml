@@ -1,7 +1,43 @@
 services:
+  # Next.js アプリ本体
   web:
     build: .
     ports:
       - "3000:3000"
+    environment:
+      # アプリは Docker ネットワーク内の "db" というサービス名で PostgreSQL に接続する。
+      # ${POSTGRES_PASSWORD} は同じフォルダの .env から読まれる（Git にはコミットしない）。
+      DATABASE_URL: postgresql://app:${POSTGRES_PASSWORD}@db:5432/app
+    depends_on:
+      db:
+        # db が「受付可能(healthy)」になってから web を起動する
+        condition: service_healthy
     restart: always
-    
+
+  # PostgreSQL データベース
+  db:
+    image: postgres:18
+    environment:
+      POSTGRES_USER: app
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: app
+    volumes:
+      # データの実体を名前付きボリューム dbdata に保存する。
+      # これでコンテナを作り直しても ToDo のデータは消えない。
+      # postgres:18 はマウント先が /var/lib/postgresql（従来の /data ではない）。
+      - dbdata:/var/lib/postgresql
+    ports:
+      # PostgreSQL は 127.0.0.1（このマシン自身）だけに公開する。
+      # 家のLANやインターネットには出さない安全設定。Mac からは SSHトンネル経由で接続する。
+      - "127.0.0.1:5432:5432"
+    healthcheck:
+      # pg_isready で「接続を受け付けられる状態か」を定期チェックする
+      test: ["CMD-SHELL", "pg_isready -U app -d app"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: always
+
+volumes:
+  # 上で使った名前付きボリュームの宣言。ミニPCを再起動しても残る。
+  dbdata:
