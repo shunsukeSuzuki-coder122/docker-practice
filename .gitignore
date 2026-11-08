@@ -38,6 +38,9 @@ yarn-error.log*
 # Prisma が自動生成するクライアント（prisma generate で作り直せるのでコミットしない）
 /app/generated
 
+# 作業用の引き継ぎメモ（GitHubには上げない）
+/todo-app-handoff.md
+
 # vercel
 .vercel
 
