@@ -6,6 +6,7 @@ export default function TodosPage() {
   return (
     <main className="mx-auto flex w-full max-w-md flex-col gap-6 px-4 py-10">
       <h1 className="text-2xl font-bold">ToDo リスト</h1>
+      <p className="text-sm text-zinc-500">今日やることを書き出そう ✍️</p>
 
       {/* 追加フォーム。送信すると Server Action(addTodo) が実行される */}
       <form action={addTodo} className="flex gap-2">
