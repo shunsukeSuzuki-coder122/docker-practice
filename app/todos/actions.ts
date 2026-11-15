@@ -12,7 +12,11 @@ export async function addTodo(formData: FormData) {
   // 空文字は登録しない（サーバ側でもきちんと検証する）
   if (title === "") return;
 
-  await prisma.todo.create({ data: { title } });
+  // 期限（任意）。input type="date" は "YYYY-MM-DD" で届く。空なら null にする
+  const dueRaw = String(formData.get("dueDate") ?? "").trim();
+  const dueDate = dueRaw === "" ? null : new Date(dueRaw);
+
+  await prisma.todo.create({ data: { title, dueDate } });
 
   // /todos ページのキャッシュを更新し、最新の一覧を表示させる
   revalidatePath("/todos");

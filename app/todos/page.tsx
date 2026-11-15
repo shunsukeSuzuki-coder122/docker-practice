@@ -9,13 +9,19 @@ export default function TodosPage() {
       <p className="text-sm text-zinc-500">今日やることを書き出そう ✍️</p>
 
       {/* 追加フォーム。送信すると Server Action(addTodo) が実行される */}
-      <form action={addTodo} className="flex gap-2">
+      <form action={addTodo} className="flex flex-wrap gap-2">
         <input
           type="text"
           name="title"
           required
           placeholder="やることを入力"
-          className="flex-1 rounded border border-zinc-300 px-3 py-2 dark:border-zinc-600 dark:bg-zinc-900"
+          className="min-w-0 flex-1 rounded border border-zinc-300 px-3 py-2 dark:border-zinc-600 dark:bg-zinc-900"
+        />
+        {/* 期限（任意）。未入力でも追加できる */}
+        <input
+          type="date"
+          name="dueDate"
+          className="rounded border border-zinc-300 px-3 py-2 dark:border-zinc-600 dark:bg-zinc-900"
         />
         <button
           type="submit"

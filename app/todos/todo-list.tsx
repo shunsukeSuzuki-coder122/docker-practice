@@ -37,14 +37,20 @@ export default async function TodoList() {
             </button>
           </form>
 
-          {/* タイトル（完了済みは打ち消し線） */}
+          {/* タイトル＋期限（完了済みは打ち消し線） */}
           <span
             className={
-              "flex-1 " +
+              "flex flex-1 flex-col " +
               (todo.done ? "text-zinc-400 line-through" : "text-zinc-900 dark:text-zinc-100")
             }
           >
             {todo.title}
+            {/* 期限がある時だけ表示 */}
+            {todo.dueDate && (
+              <span className="text-xs text-zinc-500">
+                期限: {todo.dueDate.toLocaleDateString("ja-JP")}
+              </span>
+            )}
           </span>
 
           {/* 削除ボタン */}

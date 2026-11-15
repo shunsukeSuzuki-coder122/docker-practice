@@ -20,5 +20,6 @@ model Todo {
   id        Int      @id @default(autoincrement()) // 主キー。自動で連番が振られる
   title     String // ToDo の内容
   done      Boolean  @default(false) // 完了したか。初期値は false（未完了）
+  dueDate   DateTime? // 期限（任意）。? を付けると「未設定(null)でもOK」になる＝既存データも安全
   createdAt DateTime @default(now()) // 作成日時。登録時の時刻が自動で入る
 }
